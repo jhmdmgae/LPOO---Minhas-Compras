@@ -62,6 +62,7 @@ public class Produtos {
         this.unidade_de_medida = unidade_de_medida;
     }
     
+    //Insere um produto no banco de dados
     public void incluirProduto (Connection conn){
         
     	String sqlInsert = "INSERT INTO produtos (id, nome, marca, codigo, valor, unidade_de_medida) VALUES ( ?, ?, ?, ?, ?, ?)";
@@ -90,6 +91,7 @@ public class Produtos {
     	
     }
     
+  //Seleciona um produto no banco de dados
     public void consultarProduto (Connection conn){
         
     	String sqlSelect = "SELECT id, nome, marca, codigo, valor, unidade_de_medida FROM produtos";
