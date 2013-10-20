@@ -5,8 +5,8 @@ import java.sql.SQLException;
 
 public class TesteConexao {
     public static void main(String[] args) throws SQLException {
-        Connection connection = new Conexao().getConnection();
+        Connection conn = new Conexao().getConnection();
         System.out.println("Conexão aberta com sucesso!");
-        connection.close();
+        conn.close();
     }
 }
