@@ -1,3 +1,6 @@
+/*
+ * Classe com suporte a GUI com formulário de cadastro de um usuário.
+ */
 package usuario;
 
 import usuario.UsuarioBanco;

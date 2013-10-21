@@ -1,3 +1,7 @@
+/*
+ * Classe que faz inserção, consulta, atualização das informações sobre usuários no banco de dados
+ */
+
 package usuario;
 
 import java.sql.Connection;
@@ -26,7 +30,7 @@ public class UsuarioBanco {
 	
 	public void incluirUsuario (Usuario usuario){
 	    
-    	String sqlInsert = "INSERT INTO usuarios (id,nome,cpf,email) VALUES ( ?, ?, ?, ?)";
+    	String sqlInsert = "INSERT INTO usuarios (id,nome,cpf,email, senha) VALUES ( ?, ?, ?, ?, ?)";
     	
     	try{
     		
@@ -36,6 +40,7 @@ public class UsuarioBanco {
     		stmt.setString(2, usuario.getNome());
     		stmt.setString(3, usuario.getCpf());
     		stmt.setString(4, usuario.getEmail());
+    		stmt.setString(5, usuario.getSenha());
     		
     		stmt.execute();
     		stmt.close();
@@ -50,15 +55,13 @@ public class UsuarioBanco {
     
     public void consultarUsuario (Usuario usuario){
         
-    	String sqlSelect = "SELECT id, nome, cpf, email FROM usuarios";
-    	
-    	PreparedStatement stmt = null;
+    	String sqlSelect = "SELECT nome, cpf, email FROM usuarios";
     	
     	ResultSet rs = null;
     	
     	try{
     		
-    		stmt = conn.prepareStatement(sqlSelect);
+    		PreparedStatement stmt = conn.prepareStatement(sqlSelect);
     		
     		rs = stmt.executeQuery();
     		

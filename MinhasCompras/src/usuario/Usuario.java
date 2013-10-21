@@ -1,3 +1,6 @@
+/*
+ * Classe do objeto Usuário e seus tipos.
+ */
 package usuario;
 
 public class Usuario {
