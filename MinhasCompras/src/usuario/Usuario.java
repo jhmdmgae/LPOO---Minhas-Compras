@@ -1,15 +1,15 @@
 /*
- * Classe do objeto Usuário e seus tipos.
+ * Classe do objeto Usuï¿½rio e seus tipos.
  */
 package usuario;
 
 public class Usuario {
     
-	int id;
-    String nome;
-    String cpf;
-    String email;
-    String senha;
+    private int id;
+    private String nome;
+    private String cpf;
+    private String email;
+    private String senha;
     
     public Usuario(){
     	
@@ -19,10 +19,6 @@ public class Usuario {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-    
     public String getNome() {
         return nome;
     }

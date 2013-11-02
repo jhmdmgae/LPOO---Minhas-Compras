@@ -1,5 +1,5 @@
 /*
- * Classe com suporte a GUI com formulário de cadastro de um usuário.
+ * Classe com suporte a GUI com formulï¿½rio de cadastro de um usuï¿½rio.
  */
 package usuario;
 
@@ -59,14 +59,14 @@ public class Cadastro extends JFrame {
 		
 		JPanel panelForm = new JPanel();
 		
-		JPanel panelBotões = new JPanel();
+		JPanel panelBotï¿½es = new JPanel();
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addComponent(panelForm, GroupLayout.PREFERRED_SIZE, 424, GroupLayout.PREFERRED_SIZE)
-						.addComponent(panelBotões, GroupLayout.PREFERRED_SIZE, 424, GroupLayout.PREFERRED_SIZE))
+						.addComponent(panelBotï¿½es, GroupLayout.PREFERRED_SIZE, 424, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
@@ -74,7 +74,7 @@ public class Cadastro extends JFrame {
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addComponent(panelForm, GroupLayout.PREFERRED_SIZE, 203, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addComponent(panelBotões, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE))
+					.addComponent(panelBotï¿½es, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE))
 		);
 		
 		textFieldNome = new JTextField();
@@ -155,14 +155,21 @@ public class Cadastro extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				Usuario novoUsuario = new Usuario();
+				
+				//Cadastre o usuÃ¡rio
+				
+				//Nome nÃ£o pode passar o limite definido no SGBD, 255 caracteres incluindo os espaÃ§os
 				novoUsuario.setNome(textFieldNome.getText());
+				//O e-mail tambÃ©m nÃ£o deve ultrapassar os 255 definidos e deve atender os requisitos de validaÃ§Ã£o de e-mail
 				novoUsuario.setEmail(textFieldEmail.getText());
+				//O CPF nÃ£o deve ultrapassar os 11 caracteres e deve atender os requisitos de validaÃ§Ã£o de cpf
 				novoUsuario.setCpf(textFieldCPF.getText());
+				//A senha deve ter no mÃ­nimo 8 caracteres e no mÃ¡ximo 16 caracteres
 				novoUsuario.setSenha(textFieldSenha.getText());
 				
 				UsuarioBanco inserirUsuario = new UsuarioBanco();
 				inserirUsuario.incluirUsuario(novoUsuario);
-				showMessageDialog(null, "Usuário "+textFieldNome.getText()+" inserido com sucesso! ");
+				showMessageDialog(null, "Usuï¿½rio "+textFieldNome.getText()+" inserido com sucesso! ");
 				
 			}
 
@@ -181,26 +188,26 @@ public class Cadastro extends JFrame {
 				textFieldSenha.setText("");
 			}
 		});
-		GroupLayout gl_panelBotões = new GroupLayout(panelBotões);
-		gl_panelBotões.setHorizontalGroup(
-			gl_panelBotões.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelBotões.createSequentialGroup()
+		GroupLayout gl_panelBotï¿½es = new GroupLayout(panelBotï¿½es);
+		gl_panelBotï¿½es.setHorizontalGroup(
+			gl_panelBotï¿½es.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelBotï¿½es.createSequentialGroup()
 					.addGap(172)
 					.addComponent(btnCadastrar)
 					.addGap(18)
 					.addComponent(btnLimpar)
 					.addContainerGap(64, Short.MAX_VALUE))
 		);
-		gl_panelBotões.setVerticalGroup(
-			gl_panelBotões.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelBotões.createSequentialGroup()
+		gl_panelBotï¿½es.setVerticalGroup(
+			gl_panelBotï¿½es.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelBotï¿½es.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_panelBotões.createParallelGroup(Alignment.BASELINE)
+					.addGroup(gl_panelBotï¿½es.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnCadastrar)
 						.addComponent(btnLimpar))
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
-		panelBotões.setLayout(gl_panelBotões);
+		panelBotï¿½es.setLayout(gl_panelBotï¿½es);
 		contentPane.setLayout(gl_contentPane);
 	}
 }
