@@ -1,5 +1,5 @@
 /*
- * Classe com suporte a GUI com formul�rio de cadastro de um usu�rio.
+ * Classe com suporte a GUI com formulário de cadastro de um usuário.
  */
 package usuario;
 
@@ -14,6 +14,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JOptionPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
 import javax.swing.JTextField;
@@ -21,6 +22,8 @@ import javax.swing.JLabel;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
+import login.Autenticar;
 
 public class Cadastro extends JFrame {
 
@@ -50,7 +53,7 @@ public class Cadastro extends JFrame {
 	 * Create the frame.
 	 */
 	public Cadastro() {
-		setTitle("Cadastro de Usu\u00E1rio");
+		setTitle("Cadastro de Usuário");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -59,14 +62,15 @@ public class Cadastro extends JFrame {
 		
 		JPanel panelForm = new JPanel();
 		
-		JPanel panelBot�es = new JPanel();
+		JPanel panelBotoes = new JPanel();
+		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addComponent(panelForm, GroupLayout.PREFERRED_SIZE, 424, GroupLayout.PREFERRED_SIZE)
-						.addComponent(panelBot�es, GroupLayout.PREFERRED_SIZE, 424, GroupLayout.PREFERRED_SIZE))
+						.addComponent(panelBotoes, GroupLayout.PREFERRED_SIZE, 424, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
@@ -74,13 +78,11 @@ public class Cadastro extends JFrame {
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addComponent(panelForm, GroupLayout.PREFERRED_SIZE, 203, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addComponent(panelBot�es, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE))
+					.addComponent(panelBotoes, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE))
 		);
 		
 		textFieldNome = new JTextField();
 		textFieldNome.setColumns(20);
-		
-		JLabel lblNome = new JLabel("Nome");
 		
 		textFieldEmail = new JTextField();
 		textFieldEmail.setColumns(20);
@@ -91,11 +93,11 @@ public class Cadastro extends JFrame {
 		textFieldSenha = new JTextField();
 		textFieldSenha.setColumns(20);
 		
+		JLabel lblNome = new JLabel("Nome");
 		JLabel lblEmail = new JLabel("E-mail");
-		
 		JLabel lblCpf = new JLabel("CPF");
-		
 		JLabel lblSenha = new JLabel("Senha");
+		
 		GroupLayout gl_panelForm = new GroupLayout(panelForm);
 		gl_panelForm.setHorizontalGroup(
 			gl_panelForm.createParallelGroup(Alignment.TRAILING)
@@ -169,7 +171,12 @@ public class Cadastro extends JFrame {
 				
 				UsuarioBanco inserirUsuario = new UsuarioBanco();
 				inserirUsuario.incluirUsuario(novoUsuario);
-				showMessageDialog(null, "Usu�rio "+textFieldNome.getText()+" inserido com sucesso! ");
+				dispose();
+				JOptionPane.showMessageDialog(null, "Usuário "+textFieldNome.getText()+" inserido com sucesso! ");
+				
+				Autenticar frame2 = new Autenticar();
+				frame2.setVisible(true);
+				
 				
 			}
 
@@ -188,26 +195,26 @@ public class Cadastro extends JFrame {
 				textFieldSenha.setText("");
 			}
 		});
-		GroupLayout gl_panelBot�es = new GroupLayout(panelBot�es);
-		gl_panelBot�es.setHorizontalGroup(
-			gl_panelBot�es.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelBot�es.createSequentialGroup()
-					.addGap(172)
+		GroupLayout gl_panelBotoes = new GroupLayout(panelBotoes);
+		gl_panelBotoes.setHorizontalGroup(
+			gl_panelBotoes.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelBotoes.createSequentialGroup()
+					.addGap(131)
 					.addComponent(btnCadastrar)
 					.addGap(18)
 					.addComponent(btnLimpar)
-					.addContainerGap(64, Short.MAX_VALUE))
+					.addContainerGap(131, Short.MAX_VALUE))
 		);
-		gl_panelBot�es.setVerticalGroup(
-			gl_panelBot�es.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelBot�es.createSequentialGroup()
+		gl_panelBotoes.setVerticalGroup(
+			gl_panelBotoes.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelBotoes.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_panelBot�es.createParallelGroup(Alignment.BASELINE)
+					.addGroup(gl_panelBotoes.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnCadastrar)
 						.addComponent(btnLimpar))
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
-		panelBot�es.setLayout(gl_panelBot�es);
+		panelBotoes.setLayout(gl_panelBotoes);
 		contentPane.setLayout(gl_contentPane);
 	}
 }
