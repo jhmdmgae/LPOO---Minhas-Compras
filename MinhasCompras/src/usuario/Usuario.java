@@ -1,5 +1,5 @@
 /*
- * Classe do objeto Usu�rio e seus tipos.
+ * Classe do objeto Usuário e seus tipos.
  */
 package usuario;
 

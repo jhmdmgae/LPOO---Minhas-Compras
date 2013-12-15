@@ -1,5 +1,5 @@
 /*
- * Classe que faz inserção, consulta, atualização das informações sobre usuários no banco de dados
+ * Classe que faz inserï¿½ï¿½o, consulta, atualizaï¿½ï¿½o das informaï¿½ï¿½es sobre usuï¿½rios no banco de dados
  */
 
 package usuario;
@@ -67,10 +67,9 @@ public class UsuarioBanco {
     		
     		if(rs.next()){
     			
-    			usuario.setId(rs.getInt(1));
-    			usuario.setNome(rs.getString(2));
-    			usuario.setCpf(rs.getString(3));
-    			usuario.setEmail(rs.getString(4));
+    			usuario.setNome(rs.getString(1));
+    			usuario.setCpf(rs.getString(2));
+    			usuario.setEmail(rs.getString(3));
     			
     		}
     		
