@@ -12,10 +12,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 public class LerCodigo {
-	
+
 	public static void main(String[] args) throws IOException {
 		
-		BufferedImage image = ImageIO.read( new File("barcode.jpg"));
+		BufferedImage image = ImageIO.read( new File("300px-EAN-13-5901234123457.svg.png"));
 		
 		 System.out.println(image);
 		//BufferedImage image = ImageIO.read(new File("barcode.jpg"));
@@ -24,6 +24,7 @@ public class LerCodigo {
 	    int h = image.getHeight();
 	    int[][] result = new int[h][w];
 	    int pixel;
+	    int soma = 0;
 	
 	    int[] dataBuffInt = image.getRGB(0, 0, w, h, null, 0, w); 
 	    
@@ -37,20 +38,25 @@ public class LerCodigo {
 	         for (int col = 0; col < w; col++) {
 	        	pixel =  image.getRGB(col, row);
 	            result[row][col] = image.getRGB(col, row);
-	        	
+	        	soma = soma + -result[row][col];
 	         }
 	    }
+		
+		int mediaRGB = soma/h/w;
+		System.out.print("soma = " + soma);
+		System.out.println("mediaRGB = " + mediaRGB);
 
-	    for (int row = 20; row < 22; row++) {
+	    for (int row = 0; row < h; row++) {
 	    	System.out.println();
 	         for (int col = 0; col < w; col++) {
-	        	 if(result[row][col] == -1){
+	        	 if(result[row][col] >= -mediaRGB){
 	        		 System.out.print(" ");
-	        	     //printPixelARGB(pixel);
-	        		 //System.out.print();
+	        	     //printPixelARGB(result[row][col]);
+	        		 //System.out.print(result[row][col]);
 	        	 }	 
-	        	 if (result[row][col] != -1){
+	        	 if (result[row][col] <= -mediaRGB){
 	        	 	System.out.print("#");
+	        	 	//System.out.print(result[row][col]);
 	        	 	//System.out.print("result[row][col]");
 	        	 	//System.out.println(c.getRed());   // = (dataBuffInt[100] >> 16) & 0xFF
 	            	//System.out.println(c.getGreen()); // = (dataBuffInt[100] >> 8)  & 0xFF
