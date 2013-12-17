@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;  
 import java.io.IOException;  
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;  
@@ -15,12 +16,11 @@ import javax.swing.JLabel;
 
 public class LerCodigo {
 
+	private static int SENSIBILIDADE = 50;
+
 	public static void main(String[] args) throws IOException {
 		
-		//BufferedImage image = ImageIO.read( new File("300px-EAN-13-5901234123457.svg.png"));
-		BufferedImage image = ImageIO.read( new File("porta-toalha-codigo-de-barras.jpg"));
-		
-		 System.out.println(image);
+		BufferedImage image = ImageIO.read( new File("sample-1d-barcode1.jpg"));
 	
 	    int w = image.getWidth();
 	    int h = image.getHeight();
@@ -35,6 +35,9 @@ public class LerCodigo {
 	    int branco = 0;
 	    int preto = 0;
 	    int desviopadrao = 0;
+	    boolean teste = false;
+	    
+	    ArrayList<String> codigobinario = new ArrayList<String> ();
 	
 	    int[] dataBuffInt = image.getRGB(0, 0, w, h, null, 0, w); 
 	    
@@ -51,9 +54,7 @@ public class LerCodigo {
 	            if (result[row][col] < 0){
 	            	result[row][col] = -result[row][col];
 	            }	
-	            //System.out.println(result[row][col]);
 	        	soma = soma + result[row][col];
-	        	//System.out.println("soma = " + soma);
 	         }
 	    }
 		
@@ -62,18 +63,28 @@ public class LerCodigo {
 		System.out.println("mediaRGB = " + mediaRGB);
 		
 		
-		//descobre o inicio e o tamanho da coluna
-		row = 140;
+		//descobre o inicio e o fim da coluna
+		row = h/2;
 		for (col = 0; col < w; col++) {
 			if(result[row][col] >= mediaRGB){
 				if(referenciacolini == 0){
-					referenciacolini = col;
+					referenciacolini = col+1;
 				}
 			}
 		}
 		
+		//descobre o tamanho inicial da barra para padrão
+		for (col = referenciacolini; col < w; col++) {
+			//System.out.println("result["+row+"]["+col+"] = " + result[row][col]);
+			if(result[row][col] <= mediaRGB){
+				break;
+			}
+			referenciatam++;
+		}
+		
 		System.out.println("referenciacolini = " + referenciacolini);
 		
+		//descobre o tamanho fnal da barra para recorte
 		for (col = w-1; col > 0; col--) {
 			if(result[row][col] >= mediaRGB){
 				if(referenciacolfim == 0){
@@ -84,7 +95,7 @@ public class LerCodigo {
 		
 		System.out.println("referenciacolfim = " + referenciacolfim);
 		
-		//nova média
+		//nova média com corte
 		for (row = (h/2)-50; row < (h/2)+50; row++) {
 	         for (col = referenciacolini; col < referenciacolfim; col++) {
 	        	pixel =  image.getRGB(col, row);
@@ -102,13 +113,6 @@ public class LerCodigo {
 		System.out.println("soma = " + soma);
 		System.out.println("mediaRGB = " + mediaRGB);
 		
-		
-		for (col = referenciacolini; col < w; col++) {
-			referenciatam = referenciatam + 1;
-			if(result[row][col] <= mediaRGB){
-				break;
-			}
-		}
 		
 		System.out.println("referenciatam = " + referenciatam);
 		
@@ -140,6 +144,7 @@ public class LerCodigo {
 	         preto = 0;
 	    }
 		
+		
 		//desviopadrão
 		soma = 0;
 		for (col = 0; col < w; col++) {
@@ -150,26 +155,72 @@ public class LerCodigo {
 		desviopadrao = (int) Math.sqrt(soma / (h*w));
 		System.out.println("desviopadrao = " + desviopadrao);
 		
+		
+		//transformar em bits
+		for (col = referenciacolini; col < referenciacolfim; col++) {
+			
+			if(result[row][col] <= mediaRGB + desviopadrao / SENSIBILIDADE && result[row][col+1] >= mediaRGB + desviopadrao / SENSIBILIDADE){
+				teste = true;
+			}
+			if(result[row][col] >= mediaRGB + desviopadrao / SENSIBILIDADE && result[row][col+1] <= mediaRGB + desviopadrao / SENSIBILIDADE){
+				teste = true;
+			}
+			
+			if(result[row][col] <= mediaRGB + desviopadrao / SENSIBILIDADE){
+ 				branco++;
+ 				if(teste == true){
+ 					if(branco <= referenciatam+3 && branco >= referenciatam-3){
+ 						codigobinario.add("0");
+ 						branco = 0;
+ 	 	 				teste = false;
+ 					}else if(branco <= (2*referenciatam)+3 && branco >= (2*referenciatam)-3){
+ 						codigobinario.add("00");
+ 						branco = 0;
+ 						teste = false;
+ 					}else if(branco <= (3*referenciatam)+3 && branco >= (3*referenciatam)-3){
+ 						codigobinario.add("000");
+ 						branco = 0;
+ 						teste = false;
+ 					}
+ 	        	}
+        	 } else {
+ 				preto++;
+ 				if(preto <= referenciatam+3 && preto >= referenciatam-3){
+					codigobinario.add("1");
+					preto = 0;
+ 	 				teste = false;
+				}else if(preto <= (2*referenciatam)+3 && preto >= (2*referenciatam)-3){
+					codigobinario.add("11");
+					preto = 0;
+					teste = false;
+				}else if(preto <= (3*referenciatam)+3 && preto >= (3*referenciatam)-3){
+					codigobinario.add("111");
+					preto = 0;
+					teste = false;
+				}
+        	 }
+		}
+		//imprime a sequencia de binarios
+		for(String s : codigobinario){
+			   System.out.print(s);
+		}
+		System.out.println();
+		//System.out.println("codigobinario = " + codigobinario);
+		
+		
 		//printa a imagem
-	    for (row = 140; row < 141; row++) {
+	    for (row = h/2; row < h/2 + 20; row++) {
 	    	System.out.println();
-	         for (col = referenciacolini + 1; col < referenciacolfim; col++) {
-	        	 if(result[row][col] <= mediaRGB){
+	         for (col = referenciacolini; col < referenciacolfim; col++) {
+	        	 if(result[row][col] <= mediaRGB  + desviopadrao / SENSIBILIDADE){
 	        		 System.out.print(" ");
 	        		 //System.out.print("|" + result[row][col]);
-	        	 }	 
-	        	 if (result[row][col] >= mediaRGB){
+	        	 } else {
 	        	 	System.out.print("#");
 	        	 	//System.out.print("|" + result[row][col]);
-	        	 	//System.out.println(c.getRed());   // = (dataBuffInt[100] >> 16) & 0xFF
-	            	//System.out.println(c.getGreen()); // = (dataBuffInt[100] >> 8)  & 0xFF
-	            	//System.out.println(c.getBlue());  // = (dataBuffInt[100] >> 0)  & 0xFF
-	            	//System.out.println(c.getAlpha()); // = (dataBuffInt[100] >> 24) & 0xFF
 	             }
 	         }
-	    }
-	    
-	    
+	    }	    
 	}
 	
 	public static void printPixelARGB(int pixel) {
