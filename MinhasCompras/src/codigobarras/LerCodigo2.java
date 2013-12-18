@@ -1,11 +1,23 @@
+/*
+ * A classe possui 8 métodos sendo o método converte() o principal. 
+ * Este recebe um imagem que é carregada pelo construtor ao inicializar a classe. 
+ * Quando converte() é chamada ela inicialmente calcula a média dos valores de cada pixel 
+ * usando o método capturapixel() e somapixel() para realizar o cálculo.
+ * De posse do valor da média das cores, segue para os métodos MargemEsquerda() e 
+ * MargemDireita() que descobre onde inicia o código de barras ao considerar 
+ * o primeiro pixel mais escuro da esquerda e da direita. 
+ * Em seguida chama o método TamanhoPadraoColuna() que descobre o tamanho em pixel da primeira barra a esquerda. 
+ * Com essas informações é chamado novamente o método mediapixel() para que melhore a média das cores capturas 
+ * uma vez que removemos os espaços em brancos das laterais.
+ * Por último chamamos o método criarbits() que converte o padrão de barras em um padrão de bits depositando 
+ * cada coluna capturada no ArrayList "codigobinario" que será usado ao final de tudo para gerar 
+ * uma string de retorno, "converte".
+ */
+
 package codigobarras;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
 
 public class LerCodigo2 {
 	
@@ -16,21 +28,24 @@ public class LerCodigo2 {
 	private int inicioCodigodeBarras = 0;
 	private int finalCodigodeBarras = 0;
 	private int TamanhoPadrao;
+	private int altura;
+	private int var = 0;
 	
 	ArrayList<String> codigobinario = new ArrayList<String> ();
+	private String converte = null;
 
 	public LerCodigo2(BufferedImage imagem) {
         this.imagem = imagem;
     }
 	
-	public String[] converte(){
-		
-		//System.out.println("image = " + imagem);
+	public String converte(){
 		
 		int w = imagem.getWidth();
         int h = imagem.getHeight();
         pixel = new int[h][w];
-		
+        altura = (imagem.getHeight()/3)+var;        
+        
+        do {
 		
 		mediapixel();
 		MargemEsquerda();
@@ -38,16 +53,21 @@ public class LerCodigo2 {
 		TamanhoPadraoColuna();
 		mediapixel();
 		criarbits();
-		
-		
-		String[] converte = new String[codigobinario.size()];
-		
-	    for (int i = 0; i < codigobinario.size(); i++) {
-	    	converte[i] = codigobinario.get(i).toString();
-	    	System.out.print(converte[i]);
-	    }
 	    
-	    return converte;
+	    StringBuilder sb = new StringBuilder();
+	    for (String sb1 : codigobinario) {  
+    	   sb.append(sb1);
+    	}  
+	    	  
+    	String converte = sb.toString();
+    	System.out.println(converte);
+    	System.out.println(converte.length());
+	    
+    	var+= 10;
+    	
+        } while (converte.length() == 95);
+    	
+        return converte;
 	    
 	}
 	
@@ -69,8 +89,6 @@ public class LerCodigo2 {
 		System.out.println("w = " + w);
 		System.out.println("h = " + h);
 		System.out.println("mediaRGB = " + mediaRGB);
-		
-		
 		
 		for (int row = ((h/2)-50); row < ((h/2)+50); row++) {
 			
@@ -106,7 +124,7 @@ public class LerCodigo2 {
 	
 	private void TamanhoPadraoColuna() {
 		
-		int i = imagem.getHeight()/2;
+		int i = altura;
 		for (int y = inicioCodigodeBarras; y < imagem.getWidth(); y++) {
 			//System.out.println("pixel["+row+"]["+col+"] = " + pixel[row][col]);
 			if(pixel[i][y] <= mediaRGB){
@@ -120,7 +138,7 @@ public class LerCodigo2 {
 
 	private void MargemDireita() {
 		
-		int i = imagem.getHeight()/2;
+		int i = altura;
 		for (int y = imagem.getWidth()-1; y > 0; y--) {
 			if(pixel[i][y] >= mediaRGB){
 				if(finalCodigodeBarras  == 0){
@@ -133,7 +151,7 @@ public class LerCodigo2 {
 
 	private void MargemEsquerda() {
 		
-		int i = imagem.getHeight()/2;
+		int i = altura;
 		for (int y = 0; y < imagem.getWidth(); y++) {
 			if(pixel[i][y] >= mediaRGB){
 				if(inicioCodigodeBarras == 0){
@@ -145,11 +163,10 @@ public class LerCodigo2 {
 	
 	private void criarbits(){
 		
-		
 		boolean teste = false;
 		int branco = 0;
 		int preto = 0;
-		int i = imagem.getHeight()/2;
+		int i = altura;
 		
 		for (int y = inicioCodigodeBarras; y <= finalCodigodeBarras; y++) {
 			
@@ -165,22 +182,22 @@ public class LerCodigo2 {
  				System.out.println("pixel["+i+"]["+y+"] = " + pixel[i][y]);
  				if(teste == true){
  					System.out.println("branco = " + branco);
- 					if(branco <= (TamanhoPadrao+(TamanhoPadrao/4)) && branco >= (TamanhoPadrao-(TamanhoPadrao/4))){
+ 					if(branco <= (TamanhoPadrao+(TamanhoPadrao/3))){
  						codigobinario.add("0");
  						branco = 0;
  	 	 				teste = false;
- 					}else if(branco <= (2*TamanhoPadrao)+(TamanhoPadrao/4) && branco >= ((2*TamanhoPadrao)-(TamanhoPadrao/4))){
+ 					}else if(branco <= (2*TamanhoPadrao)+(TamanhoPadrao/3)){
  						codigobinario.add("0");
  						codigobinario.add("0");
  						branco = 0;
  						teste = false;
- 					}else if(branco <= (3*TamanhoPadrao)+(TamanhoPadrao/4) && branco >= ((3*TamanhoPadrao)-(TamanhoPadrao/4))){
+ 					}else if(branco <= (3*TamanhoPadrao)+(TamanhoPadrao/2)){
  						codigobinario.add("0");
  						codigobinario.add("0");
  						codigobinario.add("0");
  						branco = 0;
  						teste = false;
- 					}else if(branco <= (4*TamanhoPadrao)+(TamanhoPadrao/4) && branco >= ((4*TamanhoPadrao)-(TamanhoPadrao/4))){
+ 					}else if(branco <= (4*TamanhoPadrao)+(TamanhoPadrao/2)){
  						codigobinario.add("0");
  						codigobinario.add("0");
  						codigobinario.add("0");
@@ -194,22 +211,22 @@ public class LerCodigo2 {
  				System.out.println("pixel["+i+"]["+y+"] = " + pixel[i][y]);
  				if(teste == true){
  					System.out.println("preto = " + preto);
-	 				if(preto <= TamanhoPadrao+(TamanhoPadrao/4) && preto >= TamanhoPadrao-(TamanhoPadrao/4)){
+	 				if(preto <= TamanhoPadrao+(TamanhoPadrao/3)){
 						codigobinario.add("1");
 						preto = 0;
 	 	 				teste = false;
-					}else if(preto <= (2*TamanhoPadrao)+(TamanhoPadrao/4) && preto >= (2*TamanhoPadrao)-(TamanhoPadrao/4)){
+					}else if(preto <= (2*TamanhoPadrao)+(TamanhoPadrao/3)){
 						codigobinario.add("1");
 						codigobinario.add("1");
 						preto = 0;
 						teste = false;
-					}else if(preto <= (3*TamanhoPadrao)+(TamanhoPadrao/4) && preto >= (3*TamanhoPadrao)-(TamanhoPadrao/4)){
+					}else if(preto <= (3*TamanhoPadrao)+(TamanhoPadrao/2)){
 						codigobinario.add("1");
 						codigobinario.add("1");
 						codigobinario.add("1");
 						preto = 0;
 						teste = false;
-					}else if(preto <= (4*TamanhoPadrao)+(TamanhoPadrao/4) && preto >= (4*TamanhoPadrao)-(TamanhoPadrao/4)){
+					}else if(preto <= (4*TamanhoPadrao)+(TamanhoPadrao/2)){
 						codigobinario.add("1");
 						codigobinario.add("1");
 						codigobinario.add("1");

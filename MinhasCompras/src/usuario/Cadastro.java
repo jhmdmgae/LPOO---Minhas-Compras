@@ -1,5 +1,11 @@
 /*
- * Classe com suporte a GUI com formulário de cadastro de um usuário.
+ * Classe com suporte a GUI com formulário de cadastro de um usuário. 
+ * Essa classe gera um novo objeto da classe usuario.java e fornece os campos para inclusão 
+ * com todos os atributos necessários da classe.
+ * Apertando o botão cadastrar é pego todos os valores preenchidos e criado um novo objeto da classe UsuarioBanco
+ * depois chamado o método inserir usuario que recebe como parametros um objeto usuario.
+ * Nesse método é gerada um string com uma query a ser passada para o banco quando estabelecida a conexão.
+ * Apertando o botão resetar todos os dados preenchidos são limpos.
  */
 package usuario;
 

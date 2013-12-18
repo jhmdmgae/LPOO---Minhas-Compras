@@ -1,5 +1,6 @@
 /*
- * Classe do objeto Usuário e seus tipos.
+ * Essa classe cria um objeto usuario com os atributos pertinentes ao objeto.
+ * Seus métodos servem para inserir e pegar os valores dos seus atributos.
  */
 package usuario;
 

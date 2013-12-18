@@ -10,6 +10,7 @@ public class teste {
 	
 	public static void main(String[] args) throws IOException {
 		
+		//BufferedImage image = ImageIO.read( new File("300px-EAN-13-5901234123457.svg.png"));
 		BufferedImage image = ImageIO.read( new File("3033710074365_cdcd0.jpg"));
 		LerCodigo2 imagem = new LerCodigo2(image);
 		imagem.converte();

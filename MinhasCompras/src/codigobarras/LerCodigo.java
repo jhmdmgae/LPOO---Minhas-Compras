@@ -15,7 +15,7 @@ public class LerCodigo {
 
 	public static void main(String[] args) throws IOException {
 		
-		BufferedImage image = ImageIO.read( new File("3033710074365_cdcd0.jpg"));
+		BufferedImage image = ImageIO.read( new File("sample-1d-barcode1.jpg"));
 	
 	    int w = image.getWidth();
 	    int h = image.getHeight();
@@ -157,27 +157,26 @@ public class LerCodigo {
  				System.out.println("result["+row+"]["+col+"] = " + result[row][col]);
  				if(teste == true){
  					System.out.println("branco = " + branco);
- 					if(branco <= (referenciatam+(referenciatam/4)) && branco >= (referenciatam-(referenciatam/4))){
+ 					if(branco <= (referenciatam+(referenciatam/3)) && branco >= (referenciatam-(referenciatam/3))){
  						codigobinario.add("0");
  						branco = 0;
  	 	 				teste = false;
- 					}else if(branco <= (2*referenciatam)+(referenciatam/4) && branco >= ((2*referenciatam)-(referenciatam/4))){
+ 					}else if(branco <= (2*referenciatam)+(referenciatam/3) && branco >= ((2*referenciatam)-(referenciatam/3))){
  						codigobinario.add("0");
  						codigobinario.add("0");
  						branco = 0;
  						teste = false;
- 					}else if(branco <= (3*referenciatam)+(referenciatam/4) && branco >= ((3*referenciatam)-(referenciatam/4))){
+ 					}else if(branco <= (3*referenciatam)+(referenciatam/3) && branco >= ((3*referenciatam)-(referenciatam/3))){
  						codigobinario.add("0");
  						codigobinario.add("0");
  						codigobinario.add("0");
  						branco = 0;
  						teste = false;
- 					}else if(branco <= (4*referenciatam)+(referenciatam/4) && branco >= ((4*referenciatam)-(referenciatam/4))){
+ 					}else if(branco <= (4*referenciatam)+(referenciatam/3) && branco >= ((4*referenciatam)-(referenciatam/3))){
  						codigobinario.add("0");
  						codigobinario.add("0");
  						codigobinario.add("0");
  						codigobinario.add("0");
- 						
  						branco = 0;
  						teste = false;
  					}
@@ -187,22 +186,22 @@ public class LerCodigo {
  				System.out.println("result["+row+"]["+col+"] = " + result[row][col]);
  				if(teste == true){
  					System.out.println("preto = " + preto);
-	 				if(preto <= referenciatam+(referenciatam/4) && preto >= referenciatam-(referenciatam/4)){
+	 				if(preto <= referenciatam+(referenciatam/3) && preto >= referenciatam-(referenciatam/3)){
 						codigobinario.add("1");
 						preto = 0;
 	 	 				teste = false;
-					}else if(preto <= (2*referenciatam)+(referenciatam/4) && preto >= (2*referenciatam)-(referenciatam/4)){
+					}else if(preto <= (2*referenciatam)+(referenciatam/3) && preto >= (2*referenciatam)-(referenciatam/3)){
 						codigobinario.add("1");
 						codigobinario.add("1");
 						preto = 0;
 						teste = false;
-					}else if(preto <= (3*referenciatam)+(referenciatam/4) && preto >= (3*referenciatam)-(referenciatam/4)){
+					}else if(preto <= (3*referenciatam)+(referenciatam/3) && preto >= (3*referenciatam)-(referenciatam/3)){
 						codigobinario.add("1");
 						codigobinario.add("1");
 						codigobinario.add("1");
 						preto = 0;
 						teste = false;
-					}else if(preto <= (4*referenciatam)+(referenciatam/4) && preto >= (4*referenciatam)-(referenciatam/4)){
+					}else if(preto <= (4*referenciatam)+(referenciatam/3) && preto >= (4*referenciatam)-(referenciatam/3)){
 						codigobinario.add("1");
 						codigobinario.add("1");
 						codigobinario.add("1");
