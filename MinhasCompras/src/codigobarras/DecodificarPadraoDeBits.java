@@ -5,7 +5,7 @@ package codigobarras;
 //decodifica o 2a7 digito
 //decodifica o 8a12 digito
 //retorna padrao bits
-public class DecodificarCodigoBarras {
+public class DecodificarPadraoDeBits {
 	private static final short QUANT_PADROES_BITS = 10;
 	private static final short QUANT_PADROES_AB = 6;
 	
@@ -16,9 +16,10 @@ public class DecodificarCodigoBarras {
 	
 	private String[] padraoAB_Decodificado = new String[QUANT_PADROES_AB];
 	private String padraoBitsDecodificado = new String();
-	private String[] padroesBitsRecebido;
+	private String[] padroesBitsRecebidoSemDivisao = new String[95];//mudar para char //sem pardrao 101 de inicio e de fim e o do meio 01010
+	private String padroesBitsRecebido;//com pardrao 101 de inicio e de fim e o do meio 01010
 	
-	public DecodificarCodigoBarras(String[] padroesBitsRecebido){
+	public DecodificarPadraoDeBits(String padroesBitsRecebido){
 		this.padroesBitsRecebido = padroesBitsRecebido;
 		configuraCodificaEsquerdaA();
 		configuraCodificaEsquerdaB();
@@ -76,23 +77,77 @@ public class DecodificarCodigoBarras {
 	}
 	
 	public String decodificaPadraoBits(){
+		excluiPadroesBitsDeDivisao();
 		decodificaAB();
 		decodificaDigito1();
 		decodificaDigitos2a7();
 		decodificaDigitos8a13();
 		
 		return padraoBitsDecodificado;		
+	}	
+	
+	public void excluiPadroesBitsDeDivisao(){
+		
+		char[]	auxiliarArrayChar = padroesBitsRecebido.toCharArray();
+		String[] auxiliarArrayString = new String[95];
+		
+		for (int i = 0; i < auxiliarArrayChar.length; i++) {
+			auxiliarArrayString[i] = String.valueOf(auxiliarArrayChar[i]);
+		}	
+		auxiliarArrayString[0] = "*";
+		auxiliarArrayString[1] = "*";
+		auxiliarArrayString[2] = "*";		
+		auxiliarArrayString[45] = "*";
+		auxiliarArrayString[46] = "*";
+		auxiliarArrayString[47] = "*";
+		auxiliarArrayString[48] = "*";
+		auxiliarArrayString[48] = "*";
+		auxiliarArrayString[49] = "*";
+		auxiliarArrayString[92] = "*";
+		auxiliarArrayString[93] = "*";
+		auxiliarArrayString[94] = "*";
+		
+		for (int i = 0, indice = 0; i < auxiliarArrayString.length; i++) {
+			
+			if(auxiliarArrayString[i] != "*"){
+			padroesBitsRecebidoSemDivisao[indice] = auxiliarArrayString[i];
+			indice++;
+			}
+		}	
+		
+		String[] auxiliar = new String[12];
+		
+		for (int i = 0; i < auxiliar.length; i++) {
+			auxiliar[i]= "";
+		}
+		for (int i = 0, indice = 0,contador = 1; i < 84; i++) {//agrupa de 7 em 7
+//			System.out.println(" i" + i);
+//			System.out.println(contador);
+//			System.out.println("indice" + indice);
+			
+			if(contador <=7){
+				auxiliar[indice] += padroesBitsRecebidoSemDivisao[i];
+				}
+			if(contador == 7){contador =0; indice++; }			
+			contador++;			
+		}		
+		
+		padroesBitsRecebidoSemDivisao = new String[12];
+		for (int i = 0; i < 12; i++) {
+			padroesBitsRecebidoSemDivisao[i]=auxiliar[i];
+		}
+		
 	}
 	
 	private void decodificaAB(){
 		
-		for (int indicePadraoBits = 0; indicePadraoBits < (padroesBitsRecebido.length)/2; indicePadraoBits++) {
+		for (int indicePadraoBits = 0; indicePadraoBits < (padroesBitsRecebidoSemDivisao.length)/2; indicePadraoBits++) {
 			for (int indiceCodificacaoEsquerda = 0; indiceCodificacaoEsquerda < codificacaoEsquerdaA.length; indiceCodificacaoEsquerda++) {			
 				
-				if(padroesBitsRecebido[indicePadraoBits].equals(codificacaoEsquerdaA[indiceCodificacaoEsquerda])){				
+				if(padroesBitsRecebidoSemDivisao[indicePadraoBits].equals(codificacaoEsquerdaA[indiceCodificacaoEsquerda])){				
 					padraoAB_Decodificado[indicePadraoBits] = "A";//A se sequencia bits em codificaEsquerdaA 			
 				
-				}else if(padroesBitsRecebido[indicePadraoBits].equals(codificacaoEsquerdaB[indiceCodificacaoEsquerda])){
+				}else if(padroesBitsRecebidoSemDivisao[indicePadraoBits].equals(codificacaoEsquerdaB[indiceCodificacaoEsquerda])){
 					padraoAB_Decodificado[indicePadraoBits] = "B";
 				}
 			}			
@@ -116,17 +171,17 @@ public class DecodificarCodigoBarras {
 	
 	private void decodificaDigitos2a7(){
 		
-		for (int indicePadraoAB_Decodificado = 0; indicePadraoAB_Decodificado < padroesBitsRecebido.length/2; indicePadraoAB_Decodificado++) {
+		for (int indicePadraoAB_Decodificado = 0; indicePadraoAB_Decodificado < padroesBitsRecebidoSemDivisao.length/2; indicePadraoAB_Decodificado++) {
 			if(padraoAB_Decodificado[indicePadraoAB_Decodificado]=="A"){
 				
 				for (int indiceCodificacaoEsquerdaA = 0; indiceCodificacaoEsquerdaA < codificacaoEsquerdaA.length; indiceCodificacaoEsquerdaA++) {
-					if(padroesBitsRecebido[indicePadraoAB_Decodificado].equals(codificacaoEsquerdaA[indiceCodificacaoEsquerdaA])){
+					if(padroesBitsRecebidoSemDivisao[indicePadraoAB_Decodificado].equals(codificacaoEsquerdaA[indiceCodificacaoEsquerdaA])){
 						padraoBitsDecodificado += indiceCodificacaoEsquerdaA;
 					}
 				}
 			}else{
 				for (int indiceCodificacaoEsquerdaB = 0; indiceCodificacaoEsquerdaB < codificacaoEsquerdaB.length; indiceCodificacaoEsquerdaB++) {
-					if(padroesBitsRecebido[indicePadraoAB_Decodificado].equals(codificacaoEsquerdaB[indiceCodificacaoEsquerdaB])){
+					if(padroesBitsRecebidoSemDivisao[indicePadraoAB_Decodificado].equals(codificacaoEsquerdaB[indiceCodificacaoEsquerdaB])){
 						padraoBitsDecodificado += indiceCodificacaoEsquerdaB;
 					}
 				}
@@ -136,9 +191,9 @@ public class DecodificarCodigoBarras {
 	
 	private void decodificaDigitos8a13(){
 		
-		for (int indicePadroesBitsRecebido=0; indicePadroesBitsRecebido < padroesBitsRecebido.length; indicePadroesBitsRecebido++) {
+		for (int indicePadroesBitsRecebido=0; indicePadroesBitsRecebido < padroesBitsRecebidoSemDivisao.length; indicePadroesBitsRecebido++) {
 			for (int indiceCodificacaoDireita=0; indiceCodificacaoDireita < codificacaoDireita.length; indiceCodificacaoDireita++) {
-				if(padroesBitsRecebido[indicePadroesBitsRecebido].equals(codificacaoDireita[indiceCodificacaoDireita])){
+				if(padroesBitsRecebidoSemDivisao[indicePadroesBitsRecebido].equals(codificacaoDireita[indiceCodificacaoDireita])){
 					padraoBitsDecodificado = padraoBitsDecodificado + String.valueOf(indiceCodificacaoDireita);
 					break;
 			}	
