@@ -35,7 +35,7 @@ public class LerCodigo {
 	    
 	    System.out.println(w);
 	    System.out.println(h);
-	 
+	    
 	    //captura os pixels
 		for (row = (h/2)-50; row < (h/2)+50; row++) {
 	         for (col = 0; col < w; col++) {
@@ -52,7 +52,7 @@ public class LerCodigo {
 		System.out.println("mediaRGB = " + mediaRGB);
 		
 		
-		//descobre o inicio e o fim da coluna
+		//descobre a margem esquerda
 		row = h/2;
 		for (col = 0; col < w; col++) {
 			if(result[row][col] >= mediaRGB){
@@ -73,7 +73,7 @@ public class LerCodigo {
 		
 		System.out.println("referenciacolini = " + referenciacolini);
 		
-		//descobre o tamanho final da barra para recorte
+		//descobre a margem direita
 		for (col = w-1; col > 0; col--) {
 			if(result[row][col] >= mediaRGB){
 				if(referenciacolfim == 0){
@@ -214,6 +214,12 @@ public class LerCodigo {
         	 }
 		}
 		
+		String[] converte = new String[codigobinario.size()];
+	    for (int i = 0; i < codigobinario.size(); i++) {
+	    	converte[i] = codigobinario.get(i).toString();
+	    	System.out.print(converte[i]);
+	    }
+			    
 		//imprime a sequencia de binarios
 		System.out.println("tamanho do array codigo binário = " + codigobinario.size());
 		for(String s : codigobinario){
