@@ -1,10 +1,12 @@
 package codigobarras;
-//recebe 12 padroes bits (sem o 1 que nao e codificado em bits)
+//recebe string com 95 0s e 1s
+//tira pardrao 101 de inicio e de fim e o do meio 01010
+//agrupa 7 em 7 bits em array string tamanho 12 //12 padroes bits (sem o 1 que nao e codificado em bits, ele e calculado)
 //calcula o padrao AB usado nos 6 primeiros padroes bits
 //com padrao AB decodifica o 1 digito
 //decodifica o 2a7 digito
 //decodifica o 8a12 digito
-//retorna padrao bits
+//retorna 13 digitos do codigo de barras decodificado
 public class DecodificarPadraoDeBits {
 	private static final short QUANT_PADROES_BITS = 10;
 	private static final short QUANT_PADROES_AB = 6;
